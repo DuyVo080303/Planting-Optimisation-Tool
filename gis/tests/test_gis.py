@@ -1,6 +1,6 @@
 from unittest.mock import patch, MagicMock
 import builtins
-import pytest
+
 
 from core.gee_client import init_gee
 from core.geometry_parser import parse_point, parse_multipoint, parse_polygon
