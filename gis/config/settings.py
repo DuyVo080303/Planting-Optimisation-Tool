@@ -9,5 +9,5 @@ ENV_PATH = os.path.join(
 
 load_dotenv(ENV_PATH)
 
-SERVICE_ACCOUNT = os.getenv("GEE_SERVICE_ACCOUNT") 
-KEY_PATH = os.getenv("GEE_KEY_PATH") 
+SERVICE_ACCOUNT = os.getenv("GEE_SERVICE_ACCOUNT")
+KEY_PATH = os.getenv("GEE_KEY_PATH")

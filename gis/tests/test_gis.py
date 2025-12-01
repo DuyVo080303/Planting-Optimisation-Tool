@@ -4,8 +4,14 @@ import builtins
 
 from core.gee_client import init_gee
 from core.geometry_parser import parse_point, parse_multipoint, parse_polygon
-from core.extract_data import get_ph, get_rainfall,get_elevation,get_landcover,get_temperature,get_NVDI
-
+from core.extract_data import (
+    get_ph,
+    get_rainfall,
+    get_elevation,
+    get_landcover,
+    get_temperature,
+    get_NVDI,
+)
 
 
 # Helper to create fake ee module for mocking
@@ -115,7 +121,6 @@ def test_get_ph():
 
     fake_ee.FeatureCollection.return_value = fake_fc
 
-
     with patch.object(builtins, "__import__", return_value=fake_ee):
         ph_value = get_ph(-8.6, 125.6)
 
@@ -126,11 +131,11 @@ def test_get_ph():
     # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
     fake_ee.FeatureCollection.assert_called_once_with(
-        'projects/scenic-block-466510-c5/assets/soil_ph_timor'
+        "projects/scenic-block-466510-c5/assets/soil_ph_timor"
     )
     fake_fc.filterBounds.assert_called_once_with(fake_point)
     fake_fc.filterBounds.return_value.first.assert_called_once()
-    fake_feature.get.assert_called_once_with('ph')
+    fake_feature.get.assert_called_once_with("ph")
 
 
 # rainfall test
@@ -159,7 +164,7 @@ def test_get_rainfall():
     # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
     fake_ee.Image.assert_called_once_with(
-        'projects/scenic-block-466510-c5/assets/CHIRPS_5yr_Avg_Annual_Rainfall_2020_2024_30m'
+        "projects/scenic-block-466510-c5/assets/CHIRPS_5yr_Avg_Annual_Rainfall_2020_2024_30m"
     )
     fake_img.select.assert_called_once_with("b1")
     fake_img.reduceRegion.assert_called_once()
@@ -191,7 +196,7 @@ def test_get_temperature():
     # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
     fake_ee.Image.assert_called_once_with(
-        'projects/scenic-block-466510-c5/assets/MOD11A2_5yr_Avg_Annual_temperature_2020_2024_30m'
+        "projects/scenic-block-466510-c5/assets/MOD11A2_5yr_Avg_Annual_temperature_2020_2024_30m"
     )
     fake_img.select.assert_called_once_with("b1")
     fake_img.reduceRegion.assert_called_once()
@@ -222,9 +227,7 @@ def test_get_elevation():
 
     # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
-    fake_ee.Image.assert_called_once_with(
-        'projects/scenic-block-466510-c5/assets/DEM'
-    )
+    fake_ee.Image.assert_called_once_with("projects/scenic-block-466510-c5/assets/DEM")
     fake_img.select.assert_called_once_with("b1")
     fake_img.reduceRegion.assert_called_once()
 
@@ -240,27 +243,26 @@ def test_get_landcover():
 
     # Fake feature
     fake_feature = MagicMock()
-    fake_feature.get.return_value.getInfo.return_value = 'forest'
+    fake_feature.get.return_value.getInfo.return_value = "forest"
 
     fake_fc = MagicMock()
     fake_fc.filterBounds.return_value.first.return_value = fake_feature
 
     fake_ee.FeatureCollection.return_value = fake_fc
 
-
     with patch.object(builtins, "__import__", return_value=fake_ee):
         landcover_value = get_landcover(-8.6, 125.6)
 
-    assert landcover_value == 'forest'
+    assert landcover_value == "forest"
 
     # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
     fake_ee.FeatureCollection.assert_called_once_with(
-        'projects/scenic-block-466510-c5/assets/farm_with_landcover'
+        "projects/scenic-block-466510-c5/assets/farm_with_landcover"
     )
     fake_fc.filterBounds.assert_called_once_with(fake_point)
     fake_fc.filterBounds.return_value.first.assert_called_once()
-    fake_feature.get.assert_called_once_with('lc_class')
+    fake_feature.get.assert_called_once_with("lc_class")
 
 
 def test_get_NVDI():
@@ -271,7 +273,7 @@ def test_get_NVDI():
     fake_ee.Geometry = MagicMock()
     fake_ee.Geometry.Point.return_value = fake_point
 
-    # Fake Image 
+    # Fake Image
     fake_img = MagicMock()
 
     # Fake Dict
@@ -294,11 +296,10 @@ def test_get_NVDI():
     assert isinstance(ndvi_value, (int, float))
     assert abs(ndvi_value - 0.7815) < 1e-6
 
-        # Check that the EE API was called as expected
+    # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
     fake_ee.ImageCollection.assert_called_once_with("MODIS/061/MOD13Q1")
     fake_ic.filterDate.assert_called_once_with("2025-01-01", "2025-12-31")
     fake_ic.select.assert_called_once_with("NDVI")
     fake_ic.mean.assert_called_once()
     fake_img.reduceRegion.assert_called_once()
-

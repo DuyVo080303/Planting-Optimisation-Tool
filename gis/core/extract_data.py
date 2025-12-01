@@ -1,56 +1,52 @@
 def get_rainfall(lat: float, lon: float):
     """Fetch rainfall data (placeholder)."""
-    import ee 
+    import ee
 
     # Create a point geometry from longitude (lon), latitude (lat)
     point = ee.Geometry.Point([lon, lat])
-    
+
     # Rainfal from Annual Rainfall data from PO
-    rain = ee.Image('projects/scenic-block-466510-c5/assets/CHIRPS_5yr_Avg_Annual_Rainfall_2020_2024_30m') \
-                .select('b1')
+    rain = ee.Image(
+        "projects/scenic-block-466510-c5/assets/CHIRPS_5yr_Avg_Annual_Rainfall_2020_2024_30m"
+    ).select("b1")
 
     rain_dict = rain.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=point,
-        scale=30,       
-        maxPixels=1e9
+        reducer=ee.Reducer.mean(), geometry=point, scale=30, maxPixels=1e9
     )
-    
-    # Return as Python Float
-    rain_value = rain_dict.get('b1')
 
-    # Check it return Python Float 
+    # Return as Python Float
+    rain_value = rain_dict.get("b1")
+
+    # Check it return Python Float
     if hasattr(rain_value, "getInfo"):
         rain_value = rain_value.getInfo()
-    
+
     return float(rain_value) if rain_value is not None else None
-    
+
 
 def get_temperature(lat: float, lon: float):
     """Fetch temperature data (placeholder)."""
-    import ee 
+    import ee
 
     # Create a point geometry from longitude (lon), latitude (lat)
     point = ee.Geometry.Point([lon, lat])
-    
+
     # Rainfal from Annual Rainfall data from PO
-    temp = ee.Image('projects/scenic-block-466510-c5/assets/MOD11A2_5yr_Avg_Annual_temperature_2020_2024_30m') \
-                .select('b1')
+    temp = ee.Image(
+        "projects/scenic-block-466510-c5/assets/MOD11A2_5yr_Avg_Annual_temperature_2020_2024_30m"
+    ).select("b1")
 
     temp_dict = temp.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=point,
-        scale=30,       
-        maxPixels=1e9
+        reducer=ee.Reducer.mean(), geometry=point, scale=30, maxPixels=1e9
     )
-    
-    # Return as Python Float
-    temp_value = temp_dict.get('b1')
 
-    # Check it return Python Float 
+    # Return as Python Float
+    temp_value = temp_dict.get("b1")
+
+    # Check it return Python Float
     if hasattr(temp_value, "getInfo"):
         temp_value = temp_value.getInfo()
-    
+
     return float(temp_value) if temp_value is not None else None
 
 
@@ -63,11 +59,10 @@ def get_ph(lat: float, lon: float):
 
     # Load soil pH FeatureCollection
     soil_ph_file = ee.FeatureCollection(
-        'projects/scenic-block-466510-c5/assets/soil_ph_timor'  
-        )
+        "projects/scenic-block-466510-c5/assets/soil_ph_timor"
+    )
 
-    ph_field = 'ph'  
-
+    ph_field = "ph"
 
     # Find the polygon that intersects this point
     feature = soil_ph_file.filterBounds(point).first()
@@ -76,11 +71,11 @@ def get_ph(lat: float, lon: float):
     feature_info = feature.getInfo() if feature is not None else None
     if feature_info is None:
         return None
-    
+
     # Read the 'ph' attribute from the feature
     ph_val = feature.get(ph_field)
 
-    # Check it return Python Float 
+    # Check it return Python Float
     if hasattr(ph_val, "getInfo"):
         ph_val = ph_val.getInfo()
 
@@ -90,28 +85,24 @@ def get_ph(lat: float, lon: float):
 
 def get_elevation(lat: float, lon: float):
     """Fetch elevation data (placeholder)."""
-    import ee 
+    import ee
 
     # Create point geometry
     point = ee.Geometry.Point([lon, lat])
 
     # Load DEM
-    dem = ee.Image('projects/scenic-block-466510-c5/assets/DEM').select('b1') 
+    dem = ee.Image("projects/scenic-block-466510-c5/assets/DEM").select("b1")
 
     elev_dict = dem.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=point,
-        scale=30,       
-        maxPixels=1e9
+        reducer=ee.Reducer.mean(), geometry=point, scale=30, maxPixels=1e9
     )
-    
-    elev_value = elev_dict.get('b1')
 
-    if hasattr(elev_value,"getInfo"):
+    elev_value = elev_dict.get("b1")
+
+    if hasattr(elev_value, "getInfo"):
         elev_value = elev_value.getInfo()
-    
-    return float(elev_value) if elev_value is not None else None
 
+    return float(elev_value) if elev_value is not None else None
 
 
 def get_landcover(lat: float, lon: float):
@@ -121,10 +112,12 @@ def get_landcover(lat: float, lon: float):
     # Create point geometry
     point = ee.Geometry.Point([lon, lat])
 
-    # Load landcover FeatureCollection 
-    landcover_file = ee.FeatureCollection('projects/scenic-block-466510-c5/assets/farm_with_landcover')
+    # Load landcover FeatureCollection
+    landcover_file = ee.FeatureCollection(
+        "projects/scenic-block-466510-c5/assets/farm_with_landcover"
+    )
 
-    landcover_field = 'lc_class'
+    landcover_field = "lc_class"
 
     # Find first farm polygon that intersects this point
     farm = landcover_file.filterBounds(point).first()
@@ -148,22 +141,18 @@ def get_NVDI(lat: float, lon: float):
     # Create point geometry
     point = ee.Geometry.Point([lon, lat])
 
-    # Load MODIS NDVI collection 
+    # Load MODIS NDVI collection
     ndvi_ic = (
         ee.ImageCollection("MODIS/061/MOD13Q1")
         .filterDate("2025-01-01", "2025-12-31")
         .select("NDVI")
     )
 
-
     # Compute mean NDVI image over the period
     ndvi_img = ndvi_ic.mean()
 
     ndvi_dict = ndvi_img.reduceRegion(
-        reducer=ee.Reducer.mean(),
-        geometry=point,
-        scale=250,       
-        maxPixels=1e9
+        reducer=ee.Reducer.mean(), geometry=point, scale=250, maxPixels=1e9
     )
 
     ndvi_raw = ndvi_dict.get("NDVI").getInfo()
@@ -172,4 +161,3 @@ def get_NVDI(lat: float, lon: float):
     ndvi_mean = ndvi_raw * 1e-4
 
     return ndvi_mean
-
