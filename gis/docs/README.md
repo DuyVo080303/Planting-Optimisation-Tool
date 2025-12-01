@@ -26,3 +26,22 @@ gis/
     └──test_gis.py               # unit tests for all gis functions
 
 ```
+
+# Function Documentation 
+**get_rainfall()**
+Returns the 5-year (2020 - 2024) average annual rainfall (mm) at a given point in Timor-Leste from PO's Dataset.
+
+**get_temperature()**
+Returns the 5-year (2020 - 2024) average land surface temperature (°C) at a given point in Timor-Leste from PO's Dataset.
+
+**get_ph()**
+Returns the soil pH value at a given point, based on a soil pH polygon layer from PO's Datasetư
+
+**get_elevation()**
+Returns the elevation (m) at a given point, from a DEM provided by the PO.
+
+**get_landcover()**
+Returns the landcover class for the farm containing the point, including "forest" or "non_forest".
+
+**get_NVDI()**
+turns the mean NDVI (Normalised Difference Vegetation Index, -1 to 1) at a point for the year 2025 from Modis Dataset.
