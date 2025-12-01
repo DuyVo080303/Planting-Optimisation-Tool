@@ -87,40 +87,6 @@ def get_ph(lat: float, lon: float):
     # Return as a Python float (or None if missing)
     return float(ph_val) if ph_val is not None else None
 
-    """
-    Get soil pH from the local soil pH shapefile at a given location.
-
-    Data source:
-    projects/scenic-block-466510-c5/assets/soil_ph_timor
-    Field 'ph' stores the soil pH value for each polygon.
-    """
-    import ee
-
-    # Create point geometry
-    point = ee.Geometry.Point([lon, lat])
-
-    # Load soil pH FeatureCollection from your asset
-    soil_ph_file = ee.FeatureCollection(
-        'projects/scenic-block-466510-c5/assets/soil_ph_timor'  
-        )
-
-    ph_field = 'ph'  
-
-
-    # Find the polygon that intersects this point
-    feature = soil_ph_file.filterBounds(point).first()
-
-    # If no polygon covers this point, return None
-    feature_info = feature.getInfo() if feature is not None else None
-    if feature_info is None:
-        return None
-    
-    # Read the 'ph' attribute from the feature
-    ph_val = feature.get(ph_field).getInfo()
-
-    # Return as a Python float (or None if missing)
-    return float(ph_val) if ph_val is not None else None
-
 
 def get_elevation(lat: float, lon: float):
     """Fetch elevation data (placeholder)."""
