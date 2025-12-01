@@ -60,9 +60,6 @@ Raises an error for unsupported formats.
 A one-time script that loads farm_boundaries.gpkg, cleans the geometries, and prepares a farm table for later GIS and database use.
 It converts 3D polygons to 2D, computes centroids, calculates area in hectares, generates WKT geometry, and outputs a clean CSV (gis/docs/farm_table.csv) containing all farm attributes and polygon data.
 
-```
-
-# Function Documentation 
 **get_rainfall()**
 Returns the 5-year (2020 - 2024) average annual rainfall (mm) at a given point in Timor-Leste from PO's Dataset.
 

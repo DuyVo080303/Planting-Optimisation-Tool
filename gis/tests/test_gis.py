@@ -3,7 +3,6 @@ import builtins
 
 
 from core.gee_client import init_gee
-from core.geometry_parser import parse_point, parse_multipoint, parse_polygon
 from core.extract_data import (
     get_ph,
     get_rainfall,
@@ -11,6 +10,7 @@ from core.extract_data import (
     get_landcover,
     get_temperature,
     get_NVDI,
+)
 
 from core.geometry_parser import (
     parse_point,
@@ -47,8 +47,6 @@ def test_init_gee():
 
 
 # parse_point test
-
-
 def test_parse_point():
     fake_ee = make_fake_ee()
 
@@ -309,6 +307,8 @@ def test_get_NVDI():
     fake_ic.select.assert_called_once_with("NDVI")
     fake_ic.mean.assert_called_once()
     fake_img.reduceRegion.assert_called_once()
+
+
 # parse_geometry auto-detection
 
 
