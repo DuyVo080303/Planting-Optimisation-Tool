@@ -1,5 +1,5 @@
 def get_rainfall(lat: float, lon: float):
-    """Fetch rainfall data (placeholder)."""
+    """Returns the 5-year (2020 - 2024) average annual rainfall (mm) at a given point in Timor-Leste from PO's Dataset."""
     import ee
 
     # Create a point geometry from longitude (lon), latitude (lat)
@@ -25,7 +25,7 @@ def get_rainfall(lat: float, lon: float):
 
 
 def get_temperature(lat: float, lon: float):
-    """Fetch temperature data (placeholder)."""
+    """Returns the 5-year (2020 - 2024) average land surface temperature (°C) at a given point in Timor-Leste from PO's Dataset."""
     import ee
 
     # Create a point geometry from longitude (lon), latitude (lat)
@@ -51,7 +51,7 @@ def get_temperature(lat: float, lon: float):
 
 
 def get_ph(lat: float, lon: float):
-    """Fetch soil pH data (placeholder)."""
+    """Returns the soil pH value at a given point, based on a soil pH polygon layer from PO's Dataset."""
     import ee
 
     # Create point geometry
@@ -84,7 +84,7 @@ def get_ph(lat: float, lon: float):
 
 
 def get_elevation(lat: float, lon: float):
-    """Fetch elevation data (placeholder)."""
+    """Returns the elevation (m) at a given point, from a DEM provided by the PO."""
     import ee
 
     # Create point geometry
@@ -106,7 +106,7 @@ def get_elevation(lat: float, lon: float):
 
 
 def get_landcover(lat: float, lon: float):
-    """Fetch landcover data (placeholder)."""
+    """Returns the landcover class for the farm containing the point, including "forest" or "non_forest"."""
     import ee
 
     # Create point geometry
@@ -134,8 +134,8 @@ def get_landcover(lat: float, lon: float):
     return landcover_value
 
 
-def get_NVDI(lat: float, lon: float):
-    """Fetch NVDI data (placeholder)."""
+def get_NDVI(lat: float, lon: float):
+    """turns the mean NDVI (Normalised Difference Vegetation Index, -1 to 1) at a point for the year 2025 from Modis Dataset."""
     import ee
 
     # Create point geometry

@@ -9,7 +9,7 @@ from core.extract_data import (
     get_elevation,
     get_landcover,
     get_temperature,
-    get_NVDI,
+    get_NDVI,
 )
 
 from core.geometry_parser import (
@@ -269,7 +269,7 @@ def test_get_landcover():
     fake_feature.get.assert_called_once_with("lc_class")
 
 
-def test_get_NVDI():
+def test_get_NDVI():
     fake_ee = make_fake_ee()
 
     # Fake Geometry Point
@@ -295,7 +295,7 @@ def test_get_NVDI():
     fake_ee.ImageCollection.return_value = fake_ic
 
     with patch.object(builtins, "__import__", return_value=fake_ee):
-        ndvi_value = get_NVDI(-8.6, 125.6)
+        ndvi_value = get_NDVI(-8.6, 125.6)
 
     assert isinstance(ndvi_value, (int, float))
     assert abs(ndvi_value - 0.7815) < 1e-6
