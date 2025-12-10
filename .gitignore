@@ -39,5 +39,5 @@ tests/**/__pycache__/
 tests/.pytest_cache/
 
 # Ruff cache
-.ruff_cache/
+gis/.ruff_cache/
 
