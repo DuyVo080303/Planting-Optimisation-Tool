@@ -445,34 +445,3 @@ def test_parse_geometry_dispatch():
 
     fake_ee.Geometry.Polygon.assert_called_once()
     assert g_polygon == fake_ee.Geometry.Polygon.return_value
-
-
-from core.gee_client import init_gee
-from core.farm_profile import build_farm_profile
-
-def main() -> None:
-    # 1) Init GEE
-    print("Initialising GEE...")
-    init_gee()
-    print("GEE initialised ✅")
-
-    print("Please filled the blank value to get envrionmental factors of your farm")
-    lat = input("Latitude:  ")
-    long = input("Longtitude:   ")
-    year = input("Year(Optional):  ")
-    id = input("Farm ID (Optional):   ")
-
-    # 2) Định nghĩa polygon (lon, lat)
-    coords = [
-        (long, lat)
-    ]
-
-
-
-    
-    value = build_farm_profile(coords,year,id)
-    print(f"Your farm environmental factors")
-    print(value)
-
-if __name__ == "__main__":
-    main()
