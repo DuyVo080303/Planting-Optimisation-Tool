@@ -56,7 +56,8 @@ def get_rainfall(geometry, year: int | None = None):
     )
 
     value = stats.get(RAINFALL_BAND)
-    return round(_ee_to_float(value), 3)
+    value = int(round(_ee_to_float(value))) if value is not None else None
+    return value
 
 
 def get_temperature(geometry: list[list], year: int | None = None):
@@ -85,7 +86,8 @@ def get_temperature(geometry: list[list], year: int | None = None):
     )
 
     value = stats.get(TEMP_BAND)
-    return round(_ee_to_float(value), 3)
+    value = int(round(_ee_to_float(value))) if value is not None else None
+    return value
 
 
 def get_ph(geometry: list[list], year: int | None = None):
@@ -140,7 +142,8 @@ def get_elevation(geometry: list[list], year: int | None = None):
     )
 
     value = stats.get(DEM_BAND)
-    return round(_ee_to_float(value), 3)
+    value = int(round(_ee_to_float(value))) if value is not None else None
+    return value
 
 
 def get_slope(geometry: list[list], year: int | None = None):

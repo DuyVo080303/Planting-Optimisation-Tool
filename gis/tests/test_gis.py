@@ -186,7 +186,7 @@ def test_get_rainfall():
 
     # Check the return value
     assert isinstance(value, (int, float))
-    assert value == round(978.5366590315607, 3)
+    assert value == int(round(978.5366590315607))
 
     # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
@@ -223,7 +223,7 @@ def test_get_temperature():
 
     # Check the return value
     assert isinstance(value, (int, float))
-    assert value == round(25.251091954023018, 3)
+    assert value == int(round(25.251091954023018))
 
     # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
@@ -260,7 +260,7 @@ def test_get_elevation():
 
     # Check the return value
     assert isinstance(value, (int, float))
-    assert value == round(1867.647706320975, 3)
+    assert value == int(round(1867.647706320975))
 
     # Check that the EE API was called as expected
     fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
