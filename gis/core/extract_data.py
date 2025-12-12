@@ -16,6 +16,8 @@ from config.settings import (
     BOUNDARY_TIMOR_ASSET_ID,
 )
 
+from core.geometry_parser import parse_geometry
+
 
 # Function return to float
 def _ee_to_float(value):
@@ -27,7 +29,7 @@ def _ee_to_float(value):
     return float(value) if value is not None else None
 
 
-def get_rainfall(geometry: list[list], year: int | None = None):
+def get_rainfall(geometry, year: int | None = None):
     """
     Return mean annual rainfall (mm) for a given geometry (point or polygon).
 
@@ -41,16 +43,7 @@ def get_rainfall(geometry: list[list], year: int | None = None):
     """
     import ee
 
-    # Case one: [[lon, lat]] → Point [[6,3]]
-    if len(geometry) == 1:
-        geometry = ee.Geometry.Point(geometry[0])
-    # Case two: More 2 point
-    elif len(geometry) == 2:
-        geometry = ee.Geometry.MultiPoint(geometry)
-
-    # Case three: A list of coordinate pairs → Polygon
-    elif len(geometry) > 1:
-        geometry = ee.Geometry.Polygon(geometry)
+    geometry = parse_geometry(geometry)
 
     # Select rainfall dataset
     img = ee.Image(RAINFALL_ASSET_ID).select(RAINFALL_BAND)
@@ -79,16 +72,7 @@ def get_temperature(geometry: list[list], year: int | None = None):
     """
     import ee
 
-    # Case one: [[lon, lat]] → Point [[6,3]]
-    if len(geometry) == 1:
-        geometry = ee.Geometry.Point(geometry[0])
-    # Case two: More 2 point → MultiPoint [[6,3],[8,5]]
-    elif len(geometry) == 2:
-        geometry = ee.Geometry.MultiPoint(geometry)
-
-    # Case three: A list of coordinate pairs → Polygon
-    elif len(geometry) > 1:
-        geometry = ee.Geometry.Polygon(geometry)
+    geometry = parse_geometry(geometry)
 
     # Select rainfall dataset
     img = ee.Image(TEMP_ASSET_ID).select(TEMP_BAND)
@@ -117,16 +101,7 @@ def get_ph(geometry: list[list], year: int | None = None):
     """
     import ee
 
-    # Case one: [[lon, lat]] → Point [[6,3]]
-    if len(geometry) == 1:
-        geometry = ee.Geometry.Point(geometry[0])
-    # Case two: More 2 point → MultiPoint [[6,3],[8,5]]
-    elif len(geometry) == 2:
-        geometry = ee.Geometry.MultiPoint(geometry)
-
-    # Case three: A list of coordinate pairs → Polygon
-    elif len(geometry) > 1:
-        geometry = ee.Geometry.Polygon(geometry)
+    geometry = parse_geometry(geometry)
 
     # Load soil pH FeatureCollection
     file = ee.FeatureCollection(SOIL_PH_ASSET_ID)
@@ -154,16 +129,7 @@ def get_elevation(geometry: list[list], year: int | None = None):
     """
     import ee
 
-    # Case one: [[lon, lat]] → Point [[6,3]]
-    if len(geometry) == 1:
-        geometry = ee.Geometry.Point(geometry[0])
-    # Case two: More 2 point → MultiPoint [[6,3],[8,5]]
-    elif len(geometry) == 2:
-        geometry = ee.Geometry.MultiPoint(geometry)
-
-    # Case three: A list of coordinate pairs → Polygon
-    elif len(geometry) > 1:
-        geometry = ee.Geometry.Polygon(geometry)
+    geometry = parse_geometry(geometry)
 
     # Load DEM
     img = ee.Image(DEM_ASSET_ID).select(DEM_BAND)
@@ -190,16 +156,7 @@ def get_slope(geometry: list[list], year: int | None = None):
     """
     import ee
 
-    # Case one: [[lon, lat]] → Point [[6,3]]
-    if len(geometry) == 1:
-        geometry = ee.Geometry.Point(geometry[0])
-    # Case two: More 2 point → MultiPoint [[6,3],[8,5]]
-    elif len(geometry) == 2:
-        geometry = ee.Geometry.MultiPoint(geometry)
-
-    # Case three: A list of coordinate pairs → Polygon
-    elif len(geometry) > 1:
-        geometry = ee.Geometry.Polygon(geometry)
+    geometry = parse_geometry(geometry)
 
     # Load DEM
     img = ee.Image(DEM_ASSET_ID).select(DEM_BAND)
@@ -229,16 +186,7 @@ def get_texture(geometry: list[list], year: int | None = None):
     """
     import ee
 
-    # Case one: [[lon, lat]] → Point [[6,3]]
-    if len(geometry) == 1:
-        geometry = ee.Geometry.Point(geometry[0])
-    # Case two: More 2 point → MultiPoint [[6,3],[8,5]]
-    elif len(geometry) == 2:
-        geometry = ee.Geometry.MultiPoint(geometry)
-
-    # Case three: A list of coordinate pairs → Polygon
-    elif len(geometry) > 1:
-        geometry = ee.Geometry.Polygon(geometry)
+    geometry = parse_geometry(geometry)
 
     # Load soil texture FeatureCollection
     file = ee.FeatureCollection(SOIL_TEXTURE_ASSET_ID)
@@ -266,18 +214,8 @@ def get_area_ha(geometry: list[list]):
     ----------
     geometry : ee.Geometry.Point or ee.Geometry.Polygon for the farm.
     """
-    import ee
 
-    # Case one: [[lon, lat]] → Point [[6,3]]
-    if len(geometry) == 1:
-        geometry = ee.Geometry.Point(geometry[0])
-    # Case two: More 2 point → MultiPoint [[6,3],[8,5]]
-    elif len(geometry) == 2:
-        geometry = ee.Geometry.MultiPoint(geometry)
-
-    # Case three: A list of coordinate pairs → Polygon
-    elif len(geometry) > 1:
-        geometry = ee.Geometry.Polygon(geometry)
+    geometry = parse_geometry(geometry)
 
     # Call area based on point and polygon
     value = geometry.area(maxError=1)
@@ -300,16 +238,7 @@ def get_dist_to_coast(geometry: list[list]):
 
     import ee
 
-    # Case one: [[lon, lat]] → Point [[6,3]]
-    if len(geometry) == 1:
-        geometry = ee.Geometry.Point(geometry[0])
-    # Case two: More 2 point → MultiPoint [[6,3],[8,5]]
-    elif len(geometry) == 2:
-        geometry = ee.Geometry.MultiPoint(geometry)
-
-    # Case three: A list of coordinate pairs → Polygon
-    elif len(geometry) > 1:
-        geometry = ee.Geometry.Polygon(geometry)
+    geometry = parse_geometry(geometry)
 
     # Get centroid point
     centroid = geometry.centroid(maxError=1)

@@ -141,7 +141,7 @@ def test_get_ph():
 
     fake_ee.FeatureCollection.return_value = fake_fc
 
-    coords = [[125.6, -8.6]]
+    coords = (-8.569, 126.676)
 
     with patch.object(builtins, "__import__", return_value=fake_ee):
         ph_value = get_ph(coords)
@@ -151,7 +151,7 @@ def test_get_ph():
     assert ph_value == 5.8
 
     # Check that the EE API was called as expected
-    fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
+    fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
     fake_ee.FeatureCollection.assert_called_once_with(SOIL_PH_ASSET_ID)
     fake_fc.filterBounds.assert_called_once_with(fake_point)
     fake_fc.filterBounds.return_value.first.assert_called_once()
@@ -179,7 +179,7 @@ def test_get_rainfall():
             return fake_ee
         return real_import(name, *args, **kwargs)
 
-    coords = [[125.6, -8.6]]
+    coords = (-8.569, 126.676)
 
     with patch.object(builtins, "__import__", side_effect=fake_import):
         value = get_rainfall(coords)
@@ -189,7 +189,7 @@ def test_get_rainfall():
     assert value == round(978.5366590315607, 3)
 
     # Check that the EE API was called as expected
-    fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
+    fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
     fake_ee.Image.assert_called_once_with(RAINFALL_ASSET_ID)
     fake_img.select.assert_called_once_with(RAINFALL_BAND)
     fake_img.reduceRegion.assert_called_once()
@@ -216,7 +216,7 @@ def test_get_temperature():
             return fake_ee
         return real_import(name, *args, **kwargs)
 
-    coords = [[125.6, -8.6]]
+    coords = (-8.569, 126.676)
 
     with patch.object(builtins, "__import__", side_effect=fake_import):
         value = get_temperature(coords)
@@ -226,7 +226,7 @@ def test_get_temperature():
     assert value == round(25.251091954023018, 3)
 
     # Check that the EE API was called as expected
-    fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
+    fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
     fake_ee.Image.assert_called_once_with(TEMP_ASSET_ID)
     fake_img.select.assert_called_once_with(TEMP_BAND)
     fake_img.reduceRegion.assert_called_once()
@@ -253,7 +253,7 @@ def test_get_elevation():
             return fake_ee
         return real_import(name, *args, **kwargs)
 
-    coords = [[125.6, -8.6]]
+    coords = (-8.569, 126.676)
 
     with patch.object(builtins, "__import__", side_effect=fake_import):
         value = get_elevation(coords)
@@ -263,7 +263,7 @@ def test_get_elevation():
     assert value == round(1867.647706320975, 3)
 
     # Check that the EE API was called as expected
-    fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
+    fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
     fake_ee.Image.assert_called_once_with(DEM_ASSET_ID)
     fake_img.select.assert_called_once_with(DEM_BAND)
     fake_img.reduceRegion.assert_called_once()
@@ -294,7 +294,7 @@ def test_get_slope():
             return fake_ee
         return real_import(name, *args, **kwargs)
 
-    coords = [[125.6, -8.6]]  # [[lon, lat]] → Point
+    coords = (-8.569, 126.676)
 
     with patch.object(builtins, "__import__", side_effect=fake_import):
         value = get_slope(coords)
@@ -304,7 +304,7 @@ def test_get_slope():
     assert value == round(11.488, 3)
 
     # Check Geometry + Image calls
-    fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
+    fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
     fake_ee.Image.assert_called_once_with(DEM_ASSET_ID)
     fake_dem.select.assert_called_once_with(DEM_BAND)
     fake_ee.Terrain.slope.assert_called_once_with(fake_dem)
@@ -328,7 +328,7 @@ def test_get_texture():
 
     fake_ee.FeatureCollection.return_value = fake_fc
 
-    coords = [[125.6, -8.6]]
+    coords = (-8.569, 126.676)
 
     with patch.object(builtins, "__import__", return_value=fake_ee):
         value = get_texture(coords)
@@ -336,7 +336,7 @@ def test_get_texture():
     assert value == ["Clay"]
 
     # Check that the EE API was called as expected
-    fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
+    fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
     fake_ee.FeatureCollection.assert_called_once_with(SOIL_TEXTURE_ASSET_ID)
     fake_fc.filterBounds.assert_called_once_with(fake_point)
     fake_fc.filterBounds.return_value.first.assert_called_once()
@@ -357,7 +357,7 @@ def test_get_area():
 
     fake_ee.Geometry.Point.return_value = fake_point
 
-    coords = [[125.6, -8.6]]
+    coords = (-8.569, 126.676)
 
     with patch.object(builtins, "__import__", return_value=fake_ee):
         value = get_area_ha(coords)
@@ -366,7 +366,7 @@ def test_get_area():
     assert value == 4.932
 
     # Check that the EE API was called as expected
-    fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
+    fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
     fake_point.area.assert_called_once_with(maxError=1)
 
 
@@ -393,7 +393,7 @@ def test_get_dist_to_coast():
     fake_dist_value.getInfo.return_value = 4_932.9
     fake_centroid.distance.return_value = fake_dist_value
 
-    coords = [[125.6, -8.6]]
+    coords = (-8.569, 126.676)
 
     with patch.object(builtins, "__import__", return_value=fake_ee):
         value = get_dist_to_coast(coords)
@@ -402,7 +402,7 @@ def test_get_dist_to_coast():
     assert value == 4.933
 
     # Check that the EE API was called as expected
-    fake_ee.Geometry.Point.assert_called_once_with([125.6, -8.6])
+    fake_ee.Geometry.Point.assert_called_once_with([126.676, -8.569])
     fake_point.centroid.assert_called_once_with(maxError=1)
     fake_ee.FeatureCollection.assert_called_once_with(BOUNDARY_TIMOR_ASSET_ID)
     fake_feature.geometry.assert_called_once_with()
