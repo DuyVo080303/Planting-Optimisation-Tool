@@ -25,7 +25,7 @@ def build_farm_profile(
     texture_id = get_texture_id(geometry)
     lat, lon = get_centroid_lat_lon(geometry)
 
-    if elevation < 100 and 500 <= rainfall <= 3500:
+    if elevation < 100 and 500 <= rainfall <= 3000:
         coastal_flag = True
     else:
         coastal_flag = False
